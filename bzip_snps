@@ -1,0 +1,21 @@
+#!/bin/bash                        
+#$ -o /u/home/r/rwolff/diversity_ecology/scripts/shell_scripts/bzip_out
+#$ -e /u/home/r/rwolff/diversity_ecology/scripts/shell_scripts/bzip_err
+#$ -cwd                           
+#$ -r y                           
+#$ -j y                        
+#$ -l h_data=3G                 
+#$ -l h_rt=8:00:00               
+#$ -t 1-151                        
+
+readarray files < /u/project/ngarud/Garud_lab/metagenomic_fastq_files/Korpela/data/snps/species_snps.txt
+
+files=(null ${files[@]}) # this pads the file with an extra line in the beginning. 
+species=${files[$SGE_TASK_ID]}
+indir=/u/project/ngarud/Garud_lab/metagenomic_fastq_files/Korpela/data
+
+bzip2 ${indir}/snps/${species}/snps_depth.txt
+bzip2 ${indir}/snps/${species}/snps_info.txt
+bzip2 ${indir}/snps/${species}/snps_ref_freq.txt
+bzip2 ${indir}/snps/${species}/snps_alt_allele.txt
+
